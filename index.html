@@ -60,6 +60,62 @@
 
     <script>
 
+      const tBody=document.querySelector('tbody');
+      const deleteConfirm=document.getElementById('delete-confirm')
+      let myData=data;
+
+      myData.map((f)=>{
+        //console.log(f.product);
+
+        let tr=document.createElement('tr');
+        let content=`
+          <td>${f.product}</td>
+          <td>${f.brand}</td>
+          <td>${f.price}</td>
+          <td><button type="buttom" data-delete="${f.id}" class="btn btn-outline-danger" data-toggle="modal" data-target="#modal-delete"><img src="./img/svg/trashcan.svg"></buttom></td>
+          <td><button type="buttom" data-edit="${f.id}"  class="btn btn-outline-info"><img src="./img/svg/pencil.svg"></buttom></td>
+         `;
+        tr.innerHTML +=content;
+        tBody.appendChild(tr);
+
+
+      }).join('');
+
+      const btnDelete=document.querySelectorAll('[data-delete]');
+      const btnEdit=document.querySelectorAll('[data-edit]');
+
+      btnDelete.forEach((f)=>{
+        f.addEventListener('click',()=>{
+
+         // console.log(f.dataset.delete)
+         let results= myData.find((product)=>{
+            return product.id===f.dataset.delete
+         })
+
+        // console.log(results)
+         const modalBody=document.querySelector('.modal-body');
+
+         modalBody.innerHTML=` Tem certeza que deseja excluir o produto ${results.product}?`;
+         deleteConfirm.dataset.value=results.id;
+        })
+      })
+
+      deleteConfirm.addEventListener('click',(e)=>{
+          
+        window.location.href=`delete.html?id=${e.target.dataset.value}`
+      })
+       
+      btnEdit.forEach((f)=>{
+        f.addEventListener('click',(e)=>{
+            let id=e.target.dataset.edit;
+
+            console.log(id)
+            window.location.href=`edit.html?id=${id}`
+        })
+      })
+       
+     
+       
     
     </script>
   </body>
